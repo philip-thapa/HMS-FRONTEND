@@ -1,0 +1,43 @@
+<app-jumbotron></app-jumbotron>
+<div class="container bg-secondary mt-4 custom-css">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h2 class="p-4 mt-2 text-light fw-bold">Manage Hotel Services and Bookings</h2>
+        </div>
+        <div class="col-lg-3 col-sm-6 mb-4 text-center custom-css" [routerLink]="['/admin/rooms']">
+            <div class="card border-0 shadow rounded-xs pt-5 bg-dark text-warning">
+                <div class="card-body"> <i class="fas fa-wifi fa-5x"></i>
+                    <h4 class="mt-4 mb-3">Rooms</h4>
+                    <p>Check the available rooms</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 mb-4 text-center" [routerLink]="['/admin/users']">
+            <div class="card border-0 shadow rounded-xs pt-5 bg-dark text-warning">
+                <div class="card-body"> <i class="fas fa-parking fa-5x"></i>
+                    <h4 class="mt-4 mb-3">Check Customers</h4>
+                    <p>Check the customer list</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 mb-4 text-center" [routerLink]="['/admin/bookings']">
+            <div class="card border-0 shadow rounded-xs pt-5 bg-dark text-warning">
+                <div class="card-body"><i class="fas fa-window-restore icon-bg-purple fa-5x"></i>
+                    <h4 class="mt-4 mb-3">Bookings</h4>
+                    <p>Check Booking List</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 mb-4 text-center" [routerLink]="['/admin/roomcate']">
+            <div class="card border-0 shadow rounded-xs pt-5 bg-dark text-warning">
+                <div class="card-body"> <i class="fas fa-swimming-pool fa-5x"></i>
+                    <h4 class="mt-4 mb-3">Category</h4>
+                    <p>Check Category List</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

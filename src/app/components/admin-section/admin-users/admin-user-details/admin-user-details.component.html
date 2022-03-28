@@ -1,0 +1,14 @@
+<div class="card" style="width: 18rem;">
+    <img src="../../../../../assets/profile-picture.png" height="200px" width="40px" class="card-img-top" alt="...">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h5>ID: <span class="badge bg-secondary">{{user.id}}</span></h5></li>
+        <li class="list-group-item"><h5>Name: <span class="badge bg-secondary">{{user.firstName}}</span></h5></li>
+        <li class="list-group-item"><h5>Email: <span class="badge bg-secondary">{{user.email}}</span></h5></li>
+        <li class="list-group-item"><h5>Designation: <span class="badge bg-secondary">{{user.is_staff == true? 'Staff': 'Customer'}}</span></h5></li>
+        <li class="list-group-item"><h5>Joining Date: <span class="badge bg-secondary">{{user.date_joined}}</span></h5></li>
+    </ul>
+    <div class="card-body">
+      <a href="#" class="card-link" class="btn btn-primary me-3">Update</a>
+      <a href="#" class="card-link" class="btn btn-danger">Deactive user</a>
+    </div>
+</div>

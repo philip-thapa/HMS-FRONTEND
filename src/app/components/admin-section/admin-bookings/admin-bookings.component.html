@@ -1,0 +1,45 @@
+<h1 class="text-center">Booking List</h1>
+<form method="GET" [formGroup]="searchBookingForm" ngSubmit="onSearchSubmit()" *ngIf="searchBookingForm">
+  <div class="mb-2">
+  <input type="text" class="form-control" placeholder="Search Booking By UserEmail" formControlName="searchBookingInput" style="margin-left: 70px; width:20%; display:inline-block">
+  <button class="btn btn-primary ms-2" type="submit" (click)="onSearchSubmit()" >Search</button>
+</div>
+</form>
+<h1 class="text-center text-warning m-5" *ngIf="isBookingListEmpty">No booking found</h1>
+<div class="table-responsive" *ngIf="!isBookingListEmpty">
+  <div class="container">
+    <table class="table table-hover table-light">
+        <thead>
+          <tr class="text-center">
+              <th scope="col">B.ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">room_no</th>
+              <th scope="col">no_of_adults</th>
+              <th scope="col">no_of_childs</th>
+              <th scope="col">check_in</th>
+              <th scope="col">check_out</th>
+              <th scope="col">phone_no</th>
+              <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookingList; let i = index" class="text-center">
+              <td class="text-center">{{booking.id}}</td>
+              <td>{{booking.guest?.email}}</td>
+              <td>{{booking.room_no}}</td>
+              <td>{{booking.no_of_adults}}</td>
+              <td>{{booking.no_of_children}}</td>
+              <td>{{booking.check_in}}</td>
+              <td>{{booking.check_out}}</td>
+              <td>{{booking.phone_no}}</td>
+              <td *ngIf="booking.is_cancelled; else cancelButton">Cancelled</td>
+              <ng-template #cancelButton><td><button class="btn btn-danger" (click)="cancelBooking(booking.id)">Cancel</button></td></ng-template>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-dark ms-3" [routerLink]="['/admin/home']" routerLinkActive="router-link-active">Back</button>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,151 @@
+<div class="container">
+    <button
+    (click)="onAddClick()"
+    type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add new Room Category</button>
+    <table class="table table-hover table-light">
+        <thead>
+          <tr>
+            <th scope="col">Room Category ID</th>
+            <th scope="col">Room Category</th>
+            <th scope="col">Totol Rooms</th>
+            <th scope="col">Cost</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rc of categoryList"  class="showPointer">
+            <th scope="row" (click)="navigateToRoomCateDetails(rc.id)">{{rc.id}}</th>
+            <td (click)="navigateToRoomCateDetails(rc.id)"> {{rc.name}}</td>
+            <td>{{rc.rooms.length}}</td>
+            <td>{{rc.cost_of_room_type}}</td>
+            <th>
+              <button class="btn btn-secondary" 
+              (click)="onRoomCateUpdateClick(rc.id) "
+              type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropUpdate"
+                >Update</button>
+            </th>
+            <th>
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">Delete</button>
+              <div
+              class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" id="closeModalButtonDelete" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary" (click)="deleteCate(rc.id)" >Delete</button>
+                      </div>
+          </div>
+        </div>
+      </div>
+            </th>
+          </tr>
+        </tbody>
+    </table>
+  <button class="btn btn-dark" [routerLink]="['/admin/home']" routerLinkActive="router-link-active" >Back</button>
+
+    <div
+     class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Add new Room Category</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form
+                [formGroup]="addNewCateForm" *ngIf="this.addNewCateForm"
+                (ngSubmit)="onSubmit()"
+                method="POST">
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Room Category</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && helper['name'].errors}"
+                      formControlName="name"
+                      class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <div *ngIf="helper['name'].touched && helper['name'].errors" class="text-warning">
+                        Room Category is Required
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Rate</label>
+                        <input type="number" 
+                        [ngClass]="{'is-invalid': submitted && helper['cost_of_room_type'].errors}"
+                        formControlName="cost_of_room_type"
+                        class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <div *ngIf="helper['cost_of_room_type'].touched && helper['cost_of_room_type'].errors" class="text-warning">
+                          Room Category rate is Required
+                        </div>
+                      </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" 
+                        formControlName="description"
+                        placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                        <label for="floatingTextarea">Description</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModalButtonAdd" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div
+        class="modal fade" id="staticBackdropUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Update Category</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form
+                [formGroup]="updateCateForm" *ngIf="this.updateCateForm"
+                (ngSubmit)="onUpdateSubmit()"
+                method="POST">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Room Category Id</label>
+                        <input type="text" 
+                        formControlName="id"
+                        class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Room Category</label>
+                      <input type="text" 
+                      formControlName="name"
+                      readonly
+                      class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Rate</label>
+                        <input type="number" 
+                        formControlName="cost_of_room_type"
+                        [ngClass]="{'is-invalid': updateFormsubmitted && updateRoomHelper['cost_of_room_type'].errors}"
+                        class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" 
+                        formControlName="description"
+                        placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                        <label for="floatingTextarea">Description</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModalButtonUpdate" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+

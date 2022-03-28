@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <div class="card">
+            <div class="text-center">
+              <img src="../../../../assets/profile-picture.png" style="height: 200px; width:fit-content;" class="card-img-top" alt="...">
+            </div>
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item"><h5>ID: <span class="badge bg-secondary">{{user?.id}}</span></h5></li>
+                <li class="list-group-item"><h5>Name: <span class="badge bg-secondary">{{user?.firstName +" "+ user?.lastName}}</span></h5></li>
+                <li class="list-group-item"><h5>Email: <span class="badge bg-secondary">{{user?.email}}</span></h5></li>
+                <li class="list-group-item"><h5>Designation: <span class="badge bg-secondary">{{user?.is_staff == true? 'Staff': 'Customer'}}</span></h5></li>
+                <li class="list-group-item"><h5>Joining Date: <span class="badge bg-secondary">{{user?.date_joined | date: 'dd/MM/yyyy'}}</span></h5></li>
+            </ul>
+            <div class="card-body text-center">
+              <a class="card-link" class="btn btn-primary me-3 text-center" (click)="onUpdateClick()" data-bs-toggle="modal" data-bs-target="#staticBackdropUpdate">Update</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-4"></div>
+</div>
+
+
+<div class="modal fade" id="staticBackdropUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Update Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form
+            [formGroup]="updateProfileForm"
+            (ngSubmit)="onUpdateSubmit()"
+            *ngIf="updateProfileForm"
+            method="POST"
+            >
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">User Id</label>
+              <input type="email" formControlName="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+            </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">First Name</label>
+                  <input [ngClass]="{'is-invalid': submitted && helper['firstName'].errors}" type="email" formControlName="firstName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                    <input [ngClass]="{'is-invalid': submitted && helper['lastName'].errors}" type="email" formControlName="lastName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeModalButtonUpdate" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+

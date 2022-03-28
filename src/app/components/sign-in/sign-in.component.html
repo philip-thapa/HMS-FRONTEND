@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h1 class="text-center text-secondary">Sign In</h1>
+            <form 
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            method="POST" 
+            class="d-flex flex-column">
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Email</label>
+                    <input 
+                    formControlName="email"
+                    [ngClass]=" {'is-invalid': submitted && helper['email'].errors}"
+                    type="email" class="form-control" id="formGroupExampleInput" 
+                    placeholder="Enter your email">
+                    <div *ngIf="helper['email'].touched && helper['email'].errors" class="text-warning">
+                        <div *ngIf="helper['email'].hasError('required')">
+                            Email is required
+                        </div>
+                        <div *ngIf="helper['email'].hasError('email')">
+                            Invalid email format
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Password</label>
+                    <input 
+                    formControlName="password"
+                    [ngClass]="{'is-invalid': submitted && helper['password'].errors}"
+                    type="password" class="form-control" id="formGroupExampleInput2" 
+                    placeholder="Enter your password">
+                    <div *ngIf="helper['password'].touched && helper['password'].errors" class="text-warning">
+                        <div *ngIf="helper['password'].hasError('required')">
+                            Password is required
+                        </div>
+                        <div *ngIf="helper['password'].hasError('minlength')">
+                            Min length of 5 is required
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-block btn-success" type="submit">Sign In</button>
+                <div *ngIf="loginForm.errors" class="text-warning mt-4 text-center">
+                    Incorrect Email or Password!!
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>

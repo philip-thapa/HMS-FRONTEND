@@ -1,0 +1,9 @@
+.custom-css{
+    border-radius: 20px !important;
+  }
+.custom-image-css{
+  transition-duration: 0.7s;
+}
+.custom-image-css:hover{
+  transform: scale(1.1);
+}

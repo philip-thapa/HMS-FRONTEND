@@ -1,0 +1,20 @@
+<h3 class="m-4 text-center">All Rooms of <span class="text-primary">{{roomCateName}}</span></h3>
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Room No</th>
+            <th scope="col">Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of rooms">
+            <td>{{room.id}}</td>
+            <td *ngIf="room.availability">Available</td>
+            <td *ngIf="!room.availability">Available</td>
+          </tr>
+        </tbody>
+      </table>
+    <button class="btn btn-dark" [routerLink]="['/admin/roomcate']" routerLinkActive="router-link-active" >Back</button>
+</div>
+

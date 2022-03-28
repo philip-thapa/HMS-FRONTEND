@@ -1,0 +1,81 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h1 class="text-center text-secondary">HMS Sign Up</h1>
+            <form method="POST" class="d-flex flex-column card p-4" [formGroup]="registrationForm" 
+            (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Email</label>
+                    <input 
+                    formControlName="email" 
+                    class="form-control" 
+                    [ngClass]=" {'is-invalid': submitted && helper['email'].errors}" 
+                    type="email" id="formGroupExampleInput" 
+                    placeholder="Enter your email">
+
+                    <div *ngIf="helper['email'].touched && helper['email'].errors" class="text-warning">
+                        <div *ngIf="helper['email'].hasError('required')">
+                            Email is required
+                        </div>
+                        <div *ngIf="helper['email'].hasError('email')">
+                            Email must be a valid email address
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <label for="formGroupExampleInput2" class="form-label">First Name</label>
+                        <input formControlName="firstName" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Enter your first name">
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="formGroupExampleInput2" class="form-label">Last Name</label>
+                        <input formControlName="lastName" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Enter your last name">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Password</label>
+                    <input 
+                    [ngClass]=" {'is-invalid': submitted && helper['password'].errors}" 
+                    formControlName="password" type="password" class="form-control" id="formGroupExampleInput2" 
+                    placeholder="Enter your password">
+                    <div 
+                    *ngIf="helper['password'].touched && helper['password'].errors">
+                        <div class="text-warning"
+                        *ngIf="helper['password'].hasError('required')"
+                        >
+                            Password is required
+                        </div>
+                        <div 
+                        *ngIf="helper['password'].hasError('minlength')" class="text-warning">
+                            Password must be at least of 5 char
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Confirm Password</label>
+                    <input 
+                    [ngClass]=" {'is-invalid': submitted && helper['confPassword'].errors}" 
+                    formControlName="confPassword" type="password" class="form-control" id="formGroupExampleInput2" 
+                    placeholder="Enter your password again">
+                    <div *ngIf="helper['confPassword'].touched && helper['confPassword'].errors">
+                        <div *ngIf="helper['confPassword'].hasError('required')" class="text-warning">
+                            Password is required
+                        </div>
+                        <div *ngIf="helper['confPassword'].hasError('mustmatch')" class="text-warning">
+                            Password doesnot match
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success me-3" type="submit">Sign Up</button>
+                    <button class="btn btn-warning" (click)="onReset()">Reset</button>
+                </div>
+                <div *ngIf="registrationForm.errors" class="text-warning mt-4 text-center">
+                    Email already exists
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>

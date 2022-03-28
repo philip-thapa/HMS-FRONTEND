@@ -1,0 +1,158 @@
+<h1 class="text-center m-4">Welcome to your Dashboard {{email}}</h1>
+<div class="container">
+    <div [hidden]="!bookingList">
+        <table class="table table-hover table-light">
+            <thead>
+                <tr>
+                    <th scope="col">B.ID</th>
+                    <th scope="col">Room No</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Check In</th>
+                    <th scope="col">Check Out</th>
+                    <th scope="col">Total Adults</th>
+                    <th>Total Children</th>
+                    <th>Booking Status</th>
+                    <th>Payment Status</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookingList">
+                    <td>{{booking.id}}</td>
+                    <td>{{booking.room_no}}</td>
+                    <td>{{booking.guest?.email}}</td>
+                    <td>{{booking.check_in}}</td>
+                    <td>{{booking.check_out}}</td>
+                    <td>{{booking.no_of_adults}}</td>
+                    <td>{{booking.no_of_children}}</td>
+
+                    <td *ngIf="booking.is_cancelled; else notCancelled">Cancelled</td>
+                    <ng-template #notCancelled>
+                        <td>Booked</td>
+                    </ng-template>
+
+                    <td *ngIf="booking.payment_detail;">Paid</td>
+                    <td *ngIf="!booking.payment_detail && !booking.is_cancelled"><a [routerLink]="['/booking/payement']" routerLinkActive="router-link-active"  class="btn btn-success" (click)="nvaigateToPayment(booking.id)">Pay Now</a></td>
+
+                    <td *ngIf="!booking.is_cancelled && !booking.payment_detail">
+                        <button class="btn btn-secondary" 
+                            (click)="onUpdateBookingClick(booking.id)"
+                            type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropUpdate">Update
+                        </button>
+                    </td>
+                    <td *ngIf="booking.is_cancelled && booking.payment_detail"></td>
+                
+
+                    <td *ngIf="!booking.is_cancelled">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Cancel</button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cancel Booking?</h5>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" (click)="onCancel(booking.id)" data-bs-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </td>
+                    <td *ngIf="booking.is_cancelled"></td>
+                    <td *ngIf="booking.is_cancelled && !booking.payment_detail"></td>
+                    <td *ngIf="booking.is_cancelled && !booking.payment_detail"></td>
+                    <td *ngIf="!booking.is_cancelled && booking.payment_detail"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="!totalBooking">
+        <h1 class="text-center">Ooops!! you don't have any booking</h1>
+    </div>
+</div>
+
+
+
+<div class="modal" id="staticBackdropUpdate" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Booking</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h1 class="text-center text-warning p-4 fw-bold display-5">Update Booking</h1>
+            <div class="container">
+                <div class="container card">
+                    <form class="d-flex flex-column" method="POST" [formGroup]="updateBookingForm" (ngSubmit)="onUpdateSubmit()" *ngIf="this.updateBookingForm">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for='formGroupExampleInput1' class="form-label" maxlength="30" minlength="7">Booking Id</label>
+                            <input type="email" class="form-control" id='formGroupExampleInput1' placeholder="Booking Id" formControlName="id" readonly>
+                        </div>
+                        <div class="col">
+                            <label for='formGroupExampleInput1' class="form-label" maxlength="30" minlength="7">Email</label>
+                            <input type="email" class="form-control" id='formGroupExampleInput1' placeholder="Email" value={{email}} readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label" for='id_proof_type'>ID Proof <span style="color:red">*</span></label>
+                            <select formControlName="id_proof" class="form-control" id='id_proof_type' required >
+                                <option value="" selected hidden>Select ID proof</option>
+                                <option value="Aadhar">Aadhar</option>
+                                <option value="PAN">PAN</option>
+                                <option value="License">License</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label" for="id_proof_no" >ID Proof No <span style="color:red">*</span></label>
+                            <input class="form-control" id='id_proof_no' type="text" placeholder="ID proof Number" formControlName="id_proof_number" [ngClass]=" {'is-invalid': submitted && helper['id_proof_number'].errors}" >
+                        <div *ngIf="helper['id_proof_number'].touched && helper['id_proof_number'].errors" class="text-warning">
+                            <div *ngIf="helper['id_proof_number'].hasError('required')">
+                                Id proof no required
+                            </div>
+                            <div *ngIf="helper['id_proof_number'].hasError('mustmatch')" class="text-warning">
+                            Invalid Id proof number
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="ph_no" class="form-label">Phone number <span style="color:red">*</span></label>
+                            <input class="form-control" [ngClass]=" {'is-invalid': submitted && helper['phone_no'].errors}" type="number" placeholder="Enter you Phone" formControlName="phone_no" minlength="10" maxlength="10">
+                        <div *ngIf="helper['phone_no'].touched && helper['phone_no'].errors" class="text-warning">
+                            <div *ngIf="helper['phone_no'].hasError('required')">
+                                Phone number required
+                            </div>
+                            <div *ngIf="helper['id_proof_number'].hasError('pattern')" class="text-warning">
+                            Invalid phone number
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6 offset-2">
+                            <button class="btn btn-warning mb-2" type="submit" data-bs-dismiss="modal">Update</button>
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
+                    </form>
+                </div>
+                </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+

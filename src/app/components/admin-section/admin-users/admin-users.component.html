@@ -1,0 +1,40 @@
+<div class="row">
+    <div [ngClass]="toggleUserDetails ? 'col-12': 'col-6'">
+      <h3 class="text-center">All Users</h3>
+      <form method="GET" [formGroup]="searchUserForm" ngSubmit="onSearchSubmit()" *ngIf="searchUserForm" class="mb-2">
+        <input type="text" class="form-control" placeholder="Search User By First Name" formControlName="searchUserInput" style="margin-left: 85px; width:20%; display:inline-block">
+        <button class="btn btn-primary ms-2" type="submit" (click)="onSearchSubmit()">Search</button>
+      </form>
+      <div class="container">
+      <table class="table table-hover table-light">
+        <thead>
+          <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Email</th>
+              <th scope="col">Name</th>
+              <th scope="col">Designation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userList" (click)="onUserClick(user.id)" style="cursor: pointer;">
+              <th scope="row">{{user.id}}</th>
+              <td>{{user.email}}</td>
+              <td>{{user.firstName}} {{user.lastName}}</td>
+              <td *ngIf="user.is_staff">Staff</td>
+              <td *ngIf="!user.is_staff">Customer</td>
+          </tr>
+        </tbody>
+      </table>
+    <button class="btn btn-dark ms-3" [routerLink]="['/admin/home']" routerLinkActive="router-link-active">Back</button>
+
+    </div>
+    </div>
+  
+    <div class="col-6" [hidden]="toggleUserDetails">
+      <h3 class="mx-5 my-3 text-info" style="width: fit-content;">User Details</h3>
+      <ng-container *ngIf="userId != null">
+        <app-admin-user-details [user]="user"></app-admin-user-details>
+      </ng-container>
+    </div>
+  </div>  
+

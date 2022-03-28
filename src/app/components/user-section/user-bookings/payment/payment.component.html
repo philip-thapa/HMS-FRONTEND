@@ -1,0 +1,44 @@
+<div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h4 class="text-center p-3">Payment Details</h4>
+                        <div class="mb-3">
+                            <p class="dis fw-bold mb-2">Email address</p> 
+                            <input class="form-control" type="email" value={{email}} readonly >
+                        </div>
+                        <div>
+                            <p class="dis fw-bold mb-2">Card details</p>
+                            <div class="d-flex align-items-center justify-content-between card-atm border rounded">
+                                <input type="text" class="form-control" placeholder="Card Number">
+                                <div class="d-flex w-50"> <input type="text" class="form-control px-0" placeholder="MM/YY"> 
+                                <input type="password" maxlength=3 class="form-control px-0" placeholder="CVV"> 
+                            </div>
+                            </div>
+                            <div class="my-3 cardname">
+                                <p class="dis fw-bold mb-2">Cardholder Name</p> <input class="form-control" type="text">
+                            </div>
+                            <div class="address">
+                                <div class="d-flex flex-column align-items-end">
+                                    <div>
+                                        <p class="fw-light">Room fare: {{roomRate}}</p>
+                                    </div>
+                                    <div>
+                                        <p class="fw-light">No. of days: {{totalDays}}</p>
+                                    </div>
+                                    <div>
+                                        <p class="fw-bold">Total: Rs {{totalAmount}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-block btn-success mb-3" (click)="onPaymentSubmit()">Pay</button>
+                              </div>
+                        </div>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-outline-warning" (click)="onCancel()" id="closeModalButtonDelete">Cancel Payment</a>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+            </div>
+</div>

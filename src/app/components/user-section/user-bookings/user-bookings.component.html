@@ -1,0 +1,135 @@
+
+<h1 class="text-center text-warning bg-secondary p-4 fw-bold display-5">Book a Room</h1>
+<div class="container">
+<div class="container card p-4 m-4 bg-secondary">
+  <h3 class="text-info pb-2">Booking form</h3>
+
+    <form class="d-flex flex-column" method="POST" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+      <div class="row mb-2">
+        <div class="col">
+          <label for='formGroupExampleInput1' class="form-label" maxlength="30" minlength="7">Email</label>
+          <input type="email" class="form-control" id='formGroupExampleInput1' placeholder="Email" value={{userEmail}} readonly>
+        </div>
+        <div class="col">
+          <label for='formGroupExampleInput2' class="form-label" >Name</label>
+          <input type="text" class="form-control" id='formGroupExampleInput2' placeholder="Name" name='name' value="" minlength='2' maxlength='50'>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col">
+          <label for='check_in_date' class="form-label">Check In <span style="color:red">*</span></label>
+          <input class="form-control" id='check_in_date' type="date" formControlName="check_in" name="check_in" (change)="dateChangeHandler($event)" required> 
+          <div *ngIf="helper['check_in'].touched && helper['check_in'].errors" class="text-warning">
+            <div *ngIf="helper['check_in'].hasError('required')">
+                CheckIn Date required
+            </div>
+        </div>
+
+        </div>
+        <div class="col">
+          <label for='check_out_date' class="form-label">Check Out <span style="color:red">*</span></label>
+          <input class="form-control" [ngClass]="{'is-invalid': submitted && helper['check_out'].errors}" id='check_out_date' type="date" formControlName="check_out" name="check_out" required>
+          <div *ngIf="helper['check_out'].touched && helper['check_out'].errors" class="text-warning">
+            <div *ngIf="helper['check_out'].hasError('required')">
+                Check out date required
+            </div>
+            <div *ngIf="helper['check_out'].hasError('dateError')" class="text-warning">
+              Check out date Invalid
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col">
+          <label for='room_type' class="form-label">Room category <span style="color:red">*</span></label>
+          <select class="form-control" id='room_type' aria-readonly="true" >
+            <option value="" selected hidden>{{roomCateName}}</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label for='adults_no' class="form-label">Adults</label> 
+          <select formControlName="no_of_adults" class="form-control" id='adults_no' required>
+              <option value='1'>1</option>
+              <option value='2'>2</option>
+              <option value='3'>3</option>
+          </select> 
+          <div *ngIf="helper['no_of_adults'].touched && helper['no_of_adults'].errors" class="text-warning">
+            <div *ngIf="helper['no_of_adults'].hasError('required')">
+                CheckOut Date required
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="col">
+          <label for="children_no" class="form-label">Children</label>
+          <select formControlNameme='no_of_children' class="form-control" id='children_no' required>
+            <option value='1'>0</option>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+        </select> 
+        <div *ngIf="helper['no_of_children'].touched && helper['no_of_children'].errors" class="text-warning">
+          <div *ngIf="helper['no_of_children'].hasError('required')">
+              CheckOut Date required
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col">
+          <label class="form-label" for='id_proof_type'>ID Proof <span style="color:red">*</span></label>
+          <select [ngClass]="{'is-invalid': submitted && helper['id_proof'].errors}" formControlName="id_proof" class="form-control" id='id_proof_type' required >
+              <option value="" selected hidden>Select ID proof</option>
+              <option value="Aadhar">Aadhar</option>
+              <option value="PAN">PAN</option>
+              <option value="License">License</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <label class="form-label" for="id_proof_no">ID Proof No <span style="color:red">*</span></label>
+          <input [ngClass]="{'is-invalid': submitted && helper['id_proof_number'].errors}" class="form-control" id='id_proof_no' type="text" placeholder="ID proof Number" formControlName="id_proof_number">
+          <div *ngIf="helper['id_proof_number'].touched && helper['id_proof_number'].errors" class="text-warning">
+            <div *ngIf="helper['id_proof_number'].hasError('required')">
+                Id proof no required
+            </div>
+            <div *ngIf="helper['id_proof_number'].hasError('mustmatch')" class="text-warning">
+              Invalid Id proof number
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-6">
+          <label for="ph_no" class="form-label">Phone number <span style="color:red">*</span></label>
+          <input class="form-control" [ngClass]=" {'is-invalid': submitted && helper['phone_no'].errors}" type="number" placeholder="Enter you Phone" formControlName="phone_no" minlength="10" maxlength="10">
+          <div *ngIf="helper['phone_no'].touched && helper['phone_no'].errors" class="text-warning">
+            <div *ngIf="helper['phone_no'].hasError('required')">
+                Phone number required
+            </div>
+            <div *ngIf="helper['phone_no'].hasError('pattern')" class="text-warning">
+              Invalid phone number
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6 offset-2">
+          <button class="btn btn-warning" type="submit">Book</button>
+          <button class="btn btn-danger ms-3" (click)="onReset()">Reset</button>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </form>
+</div>
+</div>
+
+
+

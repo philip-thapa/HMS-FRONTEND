@@ -1,0 +1,168 @@
+<h1 class="text-center">All Rooms</h1>
+<div class="container">
+    <button
+        type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+        (click)="onAddNewRoomButton()"
+        >Add new Room</button>
+    <table class="table table-hover table-light">
+    <thead>
+        <tr>
+        <th scope="col">Room Number</th>
+        <th scope="col">Room Type</th>
+        <th scope="col">Cost</th>
+        <th scope="col">Availability Status</th>
+        <th></th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let room of roomList">
+            <th scope="row">{{room.id}}</th>
+            <th>{{room.room_type_name}}</th>
+            <th>{{room.room_cost}}</th>
+            <th *ngIf="room.availability">Available</th>
+            <th *ngIf="!room.availability">Not Available</th>
+            <th><button type="button" class="btn btn-secondary" (click)="onUpdateRoomButtonClick(room.id)" 
+               data-bs-toggle="modal" data-bs-target="#staticBackdropUpdate"
+              >Update</button></th>
+            <th>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">Delete</button>
+                <div
+                class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Confirm Delete</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="closeModalButtonDelete" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" (click)="onDeleteRoom(room.id)" >Delete</button>
+                        </div>
+                  </div>
+                </div>
+                </div>
+              </th>
+        </tr>
+    </tbody>
+    </table>
+  <button class="btn btn-dark" [routerLink]="['/admin/home']" routerLinkActive="router-link-active" >Back</button>
+
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Add new Room </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form
+                [formGroup]="addNewRoomForm"
+                (ngSubmit)="onAddNewRoomSubmit()"
+                *ngIf="addNewRoomForm"
+                method="POST"
+                accept="image/*"
+                >
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Room Category</label>
+                      <select [ngClass]="{'is-invalid': addRoomFormSubmitted && helper['room_type'].errors}" formControlName="room_type" class="form-select" aria-label="Default select example">
+                            <option *ngFor="let rc of categoryList" value="{{rc.id}}">{{rc.name}}</option>
+                      </select>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" 
+                        formControlName="description"
+                        [ngClass]="{'is-invalid': addRoomFormSubmitted && helper['description'].errors}" 
+                        placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                        <label for="floatingTextarea">Description</label>
+                    </div>
+                    <div class="form-group">
+                      <label for="file">File</label>
+                      <input 
+                          formControlName="file"
+                          [ngClass]="{'is-invalid': addRoomFormSubmitted && helper['file'].errors}" 
+                          id="file" 
+                          type="file" 
+                          class="form-control"
+                          (change)="onFileChange($event)">
+                      <div *ngIf="helper['file'].touched && helper['file'].invalid" class="alert alert-danger">
+                          <div *ngIf="helper['file'].hasError('required')">File is required.</div>
+                      </div>
+                  </div>
+                    <div class="mt-2">
+                        <label for="checkboxId" class="form-label">Available</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" formControlName="availability" aria-label="Checkbox for following text input">
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModalButtonAdd" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="staticBackdropUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Update Room </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form
+                [formGroup]="updateRoomForm"
+                (ngSubmit)="onUpdateRoomSubmit()"
+                *ngIf="updateRoomForm"
+                method="POST"
+                accept="image/*"
+                >
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Room Id</label>
+                  <input type="email" formControlName="id" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+                </div>
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Room Category</label>
+                      <input type="email" formControlName="room_type" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" 
+                        formControlName="description"
+                        [ngClass]="{'is-invalid': updateRoomFormSubmitted && UpdateRoomHelper['description'].errors}" 
+                        placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                        <label for="floatingTextarea">Description</label>
+                    </div>
+                    <div class="form-group">
+                      <label for="file">File</label>
+                      <input 
+                          formControlName="file"
+                          [ngClass]="{'is-invalid': updateRoomFormSubmitted && UpdateRoomHelper['file'].errors}"
+                          id="file" 
+                          type="file" 
+                          class="form-control"
+                          (change)="onFileChange($event)">
+                        <div *ngIf="helper['file'].touched && helper['file'].invalid" class="alert alert-danger">
+                            <div *ngIf="helper['file'].hasError('required')">File is required.</div>
+                        </div>
+                  </div>
+                    <div class="mt-2">
+                        <label for="checkboxId" class="form-label">Available</label>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox" formControlName="availability" aria-label="Checkbox for following text input">
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModalButtonUpdate" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
